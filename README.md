@@ -9,6 +9,12 @@ npm install
 npm run dev
 ```
 
+## Format the code
+
+```sh
+npm run format
+```
+
 ## Deploy
 
 Pushing `main` to the Pi deploys it:
