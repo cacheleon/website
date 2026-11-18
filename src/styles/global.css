@@ -114,7 +114,7 @@ h1 {
 
 h1::after {
   content: "_";
-  color: var(--orange);
+  color: var(--purple);
   animation: blink 1.1s steps(1) infinite;
 }
 

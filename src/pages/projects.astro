@@ -1,8 +1,73 @@
 ---
 import Base from "../layouts/Base.astro";
+
+const git = "https://git.cacheleon.dev";
+
+const projects = [
+  {
+    name: "ponko",
+    lang: "rust",
+    href: "https://ponko.dev/",
+    desc: "2d/3d game engine where you do everything in code, no big editor. has an ecs, its own wgpu renderer, c/c++ bindings, and an mcp server so ai tools can poke at a running game",
+  },
+  {
+    name: "order-book",
+    lang: "c++",
+    href: `${git}/order-book.git/`,
+    desc: "order book with price-time matching. limit, ioc and fok orders. ~42ns median latency",
+  },
+  {
+    name: "honeycomb",
+    lang: "rust",
+    href: `${git}/honeycomb.git/`,
+    desc: "uci chess engine, written from scratch",
+  },
+  {
+    name: "bocaml",
+    lang: "ocaml",
+    href: `${git}/bocaml.git/`,
+    desc: "compiler for b (the language before c) that spits out llvm ir. not done yet",
+  },
+  {
+    name: "website",
+    lang: "astro",
+    href: `${git}/website.git/`,
+    desc: "this site. the black hole is a webgl shader drawn in ascii. runs on a raspberry pi",
+  },
+];
 ---
 
 <Base title="projects · cacheleon">
   <h1>projects</h1>
-  <p>:3</p>
+
+  <ul class="projects">
+    {projects.map(({ name, lang, href, desc }) => (
+      <li>
+        <a href={href}>{name}</a> <span class="lang">{lang}</span>
+        <p>{desc}</p>
+      </li>
+    ))}
+  </ul>
 </Base>
+
+<style>
+  .projects {
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+  }
+
+  .projects li {
+    padding: 1rem 0;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .lang {
+    color: var(--purple);
+    font-size: 0.85em;
+  }
+
+  .projects p {
+    margin: 0.25rem 0 0;
+  }
+</style>
