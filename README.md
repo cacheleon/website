@@ -20,7 +20,7 @@ npm run format
 
 ## Deploy
 
-Pushing `main` deploys it (origin pushes to the Pi and to Codeberg):
+Pushing `main` deploys it (origin pushes to the Pi and to GitLab):
 
 ```sh
 git push
