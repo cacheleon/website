@@ -26,7 +26,7 @@ const links = [
         </li>
         <li>
           <span class="key">discord</span>
-          <span>mamke</span>
+          <span>mamke.</span>
           <button id="copy" type="button">
             copy
           </button>
@@ -54,7 +54,7 @@ const links = [
   const copy = document.getElementById("copy")!;
   copy.addEventListener("click", async () => {
     try {
-      await navigator.clipboard.writeText("mamke");
+      await navigator.clipboard.writeText("mamke.");
       copy.textContent = "copied!";
     } catch {
       copy.textContent = "couldn't copy";
