@@ -1,8 +1,340 @@
 ---
 import Base from "../layouts/Base.astro";
+import Term from "../components/Term.astro";
+import Timeline from "../components/Timeline.astro";
+
+const whoami = [
+  ["name", "Leon Mamić"],
+  ["location", "Zagreb, Croatia"],
+  ["studying", "computer science @ FER"],
+  ["writes", "C++, Rust"],
+  ["into", "low latency, compilers, game engines"],
+];
+
+const experience = [
+  {
+    when: "2026",
+    title: "IMC Trading, Launchpad",
+    where: "Amsterdam",
+    text: "Technology stream. One of 24 students picked, and 1st place in the Low Latency Challenge.",
+  },
+];
+
+const education = [
+  {
+    when: "2025–now",
+    title: "FER, University of Zagreb",
+    where: "Zagreb",
+    text: "Bachelor's in computer science, finishing in 2028.",
+  },
+];
+
+const stats = [
+  ["1st", "IMC Low Latency Challenge", "2026"],
+  ["1997", "peak Codeforces rating", "candidate master · top 2%"],
+  ["4th", "Croatian informatics nationals", "6th, 4th, 6th · 2023–25"],
+  ["7/75", "AlgoTrade", "best Croatian team · 2026"],
+];
+
+const competitions = [
+  {
+    when: "2023–2025",
+    title: "National Competition in Informatics",
+    text: "6th, 4th and 6th in Croatia, out of about 200 competitors each year.",
+  },
+  {
+    when: "2023, 2024",
+    title: "Croatian Olympiad in Informatics",
+    text: "Qualified both years. It's part of the selection for the IOI team.",
+  },
+];
+
+const teaching = [
+  {
+    when: "2025–now",
+    title: "X.FER student organization",
+    text: "Helping run the competitive programming courses and contests at FER.",
+  },
+  {
+    when: "2023–now",
+    title: "Competitive programming instructor",
+    text: "Teaching algorithms and data structures to high school students getting ready for competitions.",
+  },
+  {
+    when: "2024–2026",
+    title: "Mathos Cup",
+    where: "Osijek",
+    text: "Organizing a yearly team programming contest at the University of Osijek and writing its problems.",
+  },
+];
+
+const languages = ["Rust", "C", "Python", "Java", "JavaScript", "ARM assembly"];
+const tools = [
+  "Git",
+  "CMake",
+  "Cargo",
+  "GoogleTest",
+  "Google Benchmark",
+  "LLVM",
+  "gdb",
+  "Linux",
+  "Docker",
+  "CI",
+  "profiling",
+  "Neovim",
+  "tmux",
+];
+const speaks = ["Croatian", "English", "German (basic)"];
 ---
 
 <Base title="about me · cacheleon">
   <h1>about me</h1>
-  <p>:3</p>
+
+  <div class="whoami fade-in">
+    <Term command="whoami">
+      <dl>
+        {whoami.map(([key, value]) => (
+          <>
+            <dt>{key}</dt>
+            <dd>{value}</dd>
+          </>
+        ))}
+        <dt>building</dt>
+        <dd>
+          a bit of everything, see <a href="/projects">~/projects</a>
+        </dd>
+      </dl>
+      <div class="swatches">
+        <span style="background: var(--orange)"></span>
+        <span style="background: var(--orange-light)"></span>
+        <span style="background: var(--purple)"></span>
+        <span style="background: var(--fg)"></span>
+        <span style="background: var(--muted)"></span>
+        <span style="background: var(--border)"></span>
+      </div>
+    </Term>
+  </div>
+
+  <section class="fade-in" style="--i: 1">
+    <h2>experience</h2>
+    <Timeline items={experience} />
+  </section>
+
+  <section class="fade-in" style="--i: 2">
+    <h2>education</h2>
+    <Timeline items={education} />
+  </section>
+
+  <section class="fade-in" style="--i: 3">
+    <h2>competitions</h2>
+    <div class="stats">
+      {stats.map(([value, label, note]) => (
+        <div class="stat">
+          <span class="value">{value}</span>
+          <span class="label">{label}</span>
+          <span class="note">{note}</span>
+        </div>
+      ))}
+    </div>
+    <Timeline items={competitions} />
+  </section>
+
+  <section class="fade-in" style="--i: 4">
+    <h2>teaching &amp; volunteering</h2>
+    <Timeline items={teaching} />
+  </section>
+
+  <section class="fade-in" style="--i: 5">
+    <h2>skills</h2>
+    <dl class="skills">
+      <dt>languages</dt>
+      <dd>
+        <span class="tag main">C++</span>
+        {languages.map((x) => (
+          <span class="tag">{x}</span>
+        ))}
+      </dd>
+      <dt>tools</dt>
+      <dd>
+        {tools.map((x) => (
+          <span class="tag">{x}</span>
+        ))}
+      </dd>
+      <dt>speaks</dt>
+      <dd>
+        {speaks.map((x) => (
+          <span class="tag">{x}</span>
+        ))}
+      </dd>
+    </dl>
+  </section>
 </Base>
+
+<style>
+  .whoami {
+    margin-top: 2rem;
+  }
+
+  .whoami dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.15rem 2ch;
+    margin: 0;
+  }
+
+  .whoami dt {
+    color: var(--purple);
+    font-weight: 700;
+  }
+
+  .whoami dd {
+    margin: 0;
+    color: var(--fg);
+  }
+
+  .swatches {
+    display: flex;
+    margin-top: 1rem;
+  }
+
+  .swatches span {
+    width: 1.6rem;
+    height: 0.8rem;
+  }
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 3.25rem 0 1.4rem;
+    font-size: 1rem;
+    color: var(--purple);
+  }
+
+  h2::before {
+    content: "##";
+    color: var(--muted);
+  }
+
+  h2::after {
+    content: "";
+    flex: 1;
+    border-top: 1px dashed var(--border);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0.9rem 1rem 1rem;
+    background: var(--panel);
+  }
+
+  .stat::before,
+  .stat::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 0 solid var(--purple);
+    transition:
+      width 0.2s,
+      height 0.2s;
+  }
+
+  .stat::before {
+    top: 0;
+    left: 0;
+    border-width: 1px 0 0 1px;
+  }
+
+  .stat::after {
+    right: 0;
+    bottom: 0;
+    border-width: 0 1px 1px 0;
+  }
+
+  .stat:hover::before,
+  .stat:hover::after {
+    width: 100%;
+    height: 100%;
+  }
+
+  .value {
+    color: var(--orange);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .label {
+    margin-top: 0.5rem;
+    color: var(--fg);
+    font-size: 0.82em;
+    line-height: 1.4;
+  }
+
+  .note {
+    margin-top: auto;
+    padding-top: 0.4rem;
+    color: var(--muted);
+    font-size: 0.72em;
+    line-height: 1.4;
+  }
+
+  .skills {
+    display: grid;
+    grid-template-columns: 10ch 1fr;
+    gap: 0.75rem 1.5rem;
+    margin: 0;
+  }
+
+  .skills dt {
+    padding-top: 0.2em;
+    color: var(--orange);
+    font-size: 0.85em;
+  }
+
+  .skills dd {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0;
+  }
+
+  .tag {
+    padding: 0 0.6ch;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.85em;
+  }
+
+  .tag.main {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  @media (max-width: 44rem) {
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 34rem) {
+    .skills {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+    }
+
+    .skills dd {
+      margin-bottom: 0.6rem;
+    }
+  }
+</style>

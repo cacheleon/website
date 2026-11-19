@@ -1,0 +1,59 @@
+---
+const { command } = Astro.props;
+---
+
+<section class="term">
+  <div class="bar">
+    <span></span>
+    <span></span>
+    <span></span>
+    <em>leon@cacheleon: ~</em>
+  </div>
+  <div class="body">
+    <p class="prompt">{command}</p>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .term {
+    border: 1px solid var(--border);
+    background: var(--panel);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.5rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bar span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .bar em {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 0.75em;
+    font-style: normal;
+  }
+
+  .body {
+    padding: 1rem 1.25rem 1.25rem;
+  }
+
+  .prompt {
+    margin: 0 0 0.75rem;
+    color: var(--fg);
+  }
+
+  .prompt::before {
+    content: "$ ";
+    color: var(--purple);
+  }
+</style>

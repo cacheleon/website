@@ -1,0 +1,85 @@
+---
+interface Item {
+  when: string;
+  title: string;
+  where?: string;
+  text: string;
+}
+
+const { items } = Astro.props as { items: Item[] };
+---
+
+<ol class="timeline">
+  {items.map((item) => (
+    <li class:list={{ now: item.when.endsWith("now") }}>
+      <span class="when">{item.when}</span>
+      <h3>
+        {item.title}
+        {item.where && <span class="where">{item.where}</span>}
+      </h3>
+      <p>{item.text}</p>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .timeline {
+    margin: 0 0 0 0.25rem;
+    padding: 0 0 0 1.5rem;
+    list-style: none;
+    border-left: 1px solid var(--border);
+  }
+
+  li {
+    position: relative;
+    padding-bottom: 1.4rem;
+  }
+
+  li:last-child {
+    padding-bottom: 0;
+  }
+
+  li::before {
+    content: "";
+    position: absolute;
+    left: calc(-1.5rem - 4.5px);
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    background: var(--bg);
+    border: 1px solid var(--purple);
+  }
+
+  li.now::before {
+    background: var(--purple);
+    box-shadow: 0 0 8px var(--purple);
+  }
+
+  .when {
+    color: var(--orange);
+    font-size: 0.8em;
+    letter-spacing: 0.04em;
+  }
+
+  h3 {
+    margin: 0.1rem 0 0;
+    font-size: 1em;
+    color: var(--orange-light);
+  }
+
+  .where {
+    margin-left: 0.6ch;
+    color: var(--muted);
+    font-size: 0.85em;
+    font-weight: 400;
+  }
+
+  .where::before {
+    content: "@ ";
+  }
+
+  p {
+    margin: 0.2rem 0 0;
+    color: var(--muted);
+  }
+</style>

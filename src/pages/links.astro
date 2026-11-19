@@ -1,8 +1,131 @@
 ---
 import Base from "../layouts/Base.astro";
+import Term from "../components/Term.astro";
+
+const links = [
+  ["linkedin", "in/lmamic", "https://www.linkedin.com/in/lmamic/"],
+  ["codeforces", "borgar", "https://codeforces.com/profile/borgar"],
+  ["git", "git.cacheleon.dev", "https://git.cacheleon.dev/"],
+  ["codeberg", "cacheleon", "https://codeberg.org/cacheleon"],
+];
 ---
 
 <Base title="links · cacheleon">
   <h1>links</h1>
-  <p>:3</p>
+
+  <p class="lead">Where to find me. Email is the best way to reach me.</p>
+
+  <div class="fade-in">
+    <Term command="cat links.txt">
+      <ul>
+        <li>
+          <span class="key">email</span>
+          <a id="email" href="#">
+            leonmamic111 [at] gmail [dot] com
+          </a>
+        </li>
+        <li>
+          <span class="key">discord</span>
+          <span>mamke</span>
+          <button id="copy" type="button">
+            copy
+          </button>
+        </li>
+        {links.map(([key, text, href]) => (
+          <li>
+            <span class="key">{key}</span>
+            <a class="out" href={href}>
+              {text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </Term>
+  </div>
 </Base>
+
+<script>
+  // stored backwards so it's not sitting in the html for scrapers
+  const email = document.getElementById("email") as HTMLAnchorElement;
+  const address = [..."moc.liamg@111cimamnoel"].reverse().join("");
+  email.textContent = address;
+  email.href = "mailto:" + address;
+
+  const copy = document.getElementById("copy")!;
+  copy.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText("mamke");
+      copy.textContent = "copied!";
+    } catch {
+      copy.textContent = "couldn't copy";
+    }
+    setTimeout(() => (copy.textContent = "copy"), 1500);
+  });
+</script>
+
+<style>
+  .lead {
+    margin: 1.5rem 0 2rem;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    align-items: baseline;
+    gap: 2ch;
+    padding: 0.35rem 0;
+    border-bottom: 1px dashed var(--line);
+    color: var(--fg);
+    overflow-wrap: anywhere;
+  }
+
+  li:last-child {
+    border-bottom: 0;
+  }
+
+  .key {
+    flex: 0 0 11ch;
+    color: var(--purple);
+    font-weight: 700;
+  }
+
+  .out::after {
+    content: " ↗";
+    color: var(--muted);
+  }
+
+  #copy {
+    margin-left: auto;
+    padding: 0 0.6ch;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.8em;
+    cursor: pointer;
+  }
+
+  #copy:hover,
+  #copy:focus-visible {
+    border-color: var(--purple);
+    color: var(--purple);
+    outline: none;
+  }
+
+  @media (max-width: 34rem) {
+    li {
+      flex-wrap: wrap;
+      gap: 0 2ch;
+    }
+
+    .key {
+      flex-basis: 100%;
+      font-size: 0.85em;
+    }
+  }
+</style>
