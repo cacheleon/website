@@ -1,0 +1,17 @@
+[package]
+name = "curl-blackhole"
+version = "0.1.0"
+edition = "2024"
+description = "Streams the cacheleon.dev black hole to terminals: curl cacheleon.dev"
+publish = false
+
+[dependencies]
+
+# Tests render real frames; unoptimised maths makes them crawl.
+[profile.dev]
+opt-level = 2
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

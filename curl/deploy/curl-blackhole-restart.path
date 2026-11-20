@@ -1,0 +1,9 @@
+[Unit]
+Description=Restart curl-blackhole when the deploy hook installs a new binary
+
+[Path]
+PathChanged=/srv/curl-blackhole/curl-blackhole
+Unit=curl-blackhole-restart.service
+
+[Install]
+WantedBy=multi-user.target

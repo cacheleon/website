@@ -1,0 +1,19 @@
+[Unit]
+Description=curl cacheleon.dev black hole
+After=network.target
+
+[Service]
+ExecStart=/srv/curl-blackhole/curl-blackhole
+Environment=CURL_BLACKHOLE_ADDR=127.0.0.1:8090
+DynamicUser=yes
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+MemoryMax=64M
+
+[Install]
+WantedBy=multi-user.target

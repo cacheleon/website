@@ -1,0 +1,62 @@
+#!/bin/sh
+# Build the Astro site from main and deploy to /var/www/site.
+# Build happens in a temp dir; the live site is only touched after a successful build.
+set -e
+export PATH=/usr/local/bin:/usr/bin:/bin
+
+DEPLOY_BRANCH=refs/heads/main
+WEB_ROOT=/var/www/site
+GIT_DIR=$(cd "${GIT_DIR:-.}" && pwd)
+export GIT_DIR
+
+# Tell cgit when this repo last changed (its Idle column).
+mkdir -p "$GIT_DIR/info/web"
+git for-each-ref --sort=-committerdate --count=1 --format="%(committerdate:iso8601)" refs/heads > "$GIT_DIR/info/web/last-modified" || true
+
+deploy=no
+while read -r oldrev newrev ref; do
+    if [ "$ref" = "$DEPLOY_BRANCH" ] && [ "$newrev" != "0000000000000000000000000000000000000000" ]; then
+        deploy=yes
+    fi
+done
+[ "$deploy" = yes ] || { echo "post-receive: main not updated, skipping deploy"; exit 0; }
+
+BUILD_DIR=$(mktemp -d)
+trap 'rm -rf "$BUILD_DIR"' EXIT INT TERM
+
+echo "post-receive: checking out main into $BUILD_DIR"
+REV=$(git rev-parse --short "$DEPLOY_BRANCH")
+git archive "$DEPLOY_BRANCH" | tar -x -C "$BUILD_DIR"
+cd "$BUILD_DIR"
+unset GIT_DIR GIT_INDEX_FILE GIT_WORK_TREE
+
+echo "post-receive: npm ci"
+npm ci --no-audit --no-fund
+echo "post-receive: npm run build"
+npm run build
+
+[ -d dist ] || { echo "post-receive: dist/ missing, aborting"; exit 1; }
+echo "post-receive: rsync dist/ -> $WEB_ROOT"
+rsync -a --delete --no-perms --no-group dist/ "$WEB_ROOT"/
+
+# curl cacheleon.dev: rebuild the terminal black hole. a failed build only
+# skips this, the site is already deployed and the old binary keeps running.
+# systemd restarts the service when the binary changes.
+build_curl_blackhole() {
+    export CARGO_HOME=/srv/git/.cargo RUSTUP_HOME=/srv/git/.rustup
+    CARGO_TARGET_DIR=/srv/git/.cache/curl-target \
+        /srv/git/.cargo/bin/cargo build --release --locked --manifest-path curl/Cargo.toml || return 1
+    new=/srv/git/.cache/curl-target/release/curl-blackhole
+    live=/srv/curl-blackhole/curl-blackhole
+    # an unchanged binary would only restart the service and cut off viewers
+    if cmp -s "$new" "$live"; then
+        echo "post-receive: curl black hole unchanged"
+        return 0
+    fi
+    install -m 755 "$new" "$live.new" &&
+    mv "$live.new" "$live" &&
+    echo "post-receive: curl black hole updated"
+}
+echo "post-receive: building curl black hole"
+build_curl_blackhole || echo "post-receive: curl black hole build FAILED, site is deployed, black hole not updated"
+echo "post-receive: deployed $REV"

@@ -5,6 +5,11 @@ My personal website, built with [Astro](https://astro.build).
 The black hole on the homepage is ray traced in a WebGL shader and drawn as
 ASCII; the code is in `src/blackhole/`.
 
+`curl cacheleon.dev` plays it in the terminal. That's a small Rust server in
+`curl/` that renders the loop once at startup and streams it; nginx sends
+terminal user agents to it. The deploy hook and service files are in
+`curl/deploy/`.
+
 ## Run it locally
 
 ```sh

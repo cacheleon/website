@@ -1,0 +1,6 @@
+[Unit]
+Description=Restart curl-blackhole after a deploy
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl restart curl-blackhole.service
