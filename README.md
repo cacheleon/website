@@ -25,7 +25,7 @@ npm run format
 
 ## Deploy
 
-Pushing `main` deploys it (origin pushes to the Pi and to GitLab):
+Pushing `main` deploys it (origin pushes to the Pi and to GitHub):
 
 ```sh
 git push
